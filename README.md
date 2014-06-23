@@ -38,17 +38,17 @@ Usage:
 
 ## Download
 
-Linux AMD/Intel 64-bit:  [http://island.nu/tnc-server/tnc-server-linux-amd64.tar.gz]
+Linux AMD/Intel 64-bit:  http://island.nu/tnc-server/tnc-server-linux-amd64.tar.gz
 
-Linux ARMv7 (BeagleBone/BeagleBoard):  [http://island.nu/tnc-server/tnc-server-linux-arm7.tar.gz]
+Linux ARMv7 (BeagleBone/BeagleBoard):  http://island.nu/tnc-server/tnc-server-linux-arm7.tar.gz
 
-Linux ARMv6 (Raspberry Pi, etc.):  [http://island.nu/tnc-server/tnc-server-linux-armv6.tar.gz]
+Linux ARMv6 (Raspberry Pi, etc.):  http://island.nu/tnc-server/tnc-server-linux-armv6.tar.gz
 
-Mac OS X:  [http://island.nu/tnc-server/tnc-server-darwin-amd64.tar.gz]
+Mac OS X:  http://island.nu/tnc-server/tnc-server-darwin-amd64.tar.gz
 
-Windows 32-bit: [http://island.nu/tnc-server/tnc-server-win32.zip]
+Windows 32-bit: http://island.nu/tnc-server/tnc-server-win32.zip
 
-Windows 64-bit: [http://island.nu/tnc-server/tnc-server-win64.zip]
+Windows 64-bit: http://island.nu/tnc-server/tnc-server-win64.zip
 
 ## Using tnc-server with aprx
 tnc-server works very nicely with (aprx)[http://wiki.ham.fi/Aprx.en] using aprx's KISS-over-TNC feature.   To use it, simply include a stanza like this in your aprx.conf, substituting your own callsign and optional SSID, and the IP address of your tnc-server:
