@@ -1,6 +1,8 @@
 # tnc-server
 
-tnc-server is a multiplexing network server for KISS-enabled Amateur Radio packet terminal node controllers (TNCs).   It provides a way to share a TNC amongst multiple read/write, read-only, and write-only clients.   tnc-server attaches to a serial port and sends all received KISS messages to all connected network clients.   The clients talk to tnc-server over TCP and can run locally (on the same machine that's attached to the TNC) or remote (across the Internet).  
+tnc-server is a multiplexing network server for KISS-enabled Amateur Radio packet terminal node controllers (TNCs).   It provides a way to share a TNC amongst multiple read/write, read-only, and write-only clients.   tnc-server attaches to a serial port and sends all received KISS messages to all connected network clients.   The clients talk to tnc-server over TCP and can run locally (on the same machine that's attached to the TNC) or remotely (across the Internet).  
+
+tnc-server is designed to allow many simultaneous client connections.  An example use case might be an Emergency Operations Center (EOC) that had multiple APR
 
 tnc-server is written in the [Go Programming Language](http://golang.org/)
 
@@ -23,7 +25,7 @@ Usage:
 ```
 
 ### Windows
-Download the appropriate tnc-server package for your architecture from the one of the links below. 
+Download the appropriate tnc-server package for your architecture from the one of the links below.   See below for virtual COM port emulation, if you plan on running a Windows-based APRS client.
 ```
 Usage:
 
@@ -70,6 +72,19 @@ If you're running aprx on the same machine as tnc-server, using 127.0.0.1 as the
 [Argent Data Tracker2](http://www.argentdata.com/products/tracker2.html)
 
 If you've tested tnc-server with another TNC, let me know and I will add it to this list.
+
+## Windows Virtual COM port
+You don't need to install a virtual COM port to run tnc-server on Windows.   However, if you want to use Windows-based APRS software that expects a COMn port (like COM1, etc), you'll need to use com2tcp from the [com0com project](http://com0com.sourceforge.net/).
+
+To get this working, download com0com [here](http://sourceforge.net/projects/com0com/files/com0com/3.0.0.0/com0com-3.0.0.0-i386-and-x64-unsigned.zip/download).  Windows 7 users, download the signed version of com0com [here](https://code.google.com/p/powersdr-iq/downloads/detail?name=setup_com0com_W7_x64_signed.exe&can=2&q=).  
+
+Once you have this package installed, you'll run com2tcp like this:
+
+```
+    com2tcp \\.\CNCB0 127.0.0.1 6700
+```
+
+You'll want to substitute the IP address of your tnc-server.  CNCB0 refers to COM2 in com0com parlance.   For more info on what to put here, check out the [README file for com0com](http://com0com.cvs.sourceforge.net/viewvc/com0com/com0com/ReadMe.txt?revision=RELEASED) and the [README file for com2tcp](http://com0com.cvs.sourceforge.net/*checkout*/com0com/com2tcp/ReadMe.txt?revision=RELEASED).
 
 
 ## Building your own binaries
