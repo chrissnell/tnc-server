@@ -84,7 +84,7 @@ Once you have this package installed, you'll run com2tcp like this:
     com2tcp \\.\CNCB0 127.0.0.1 6700
 ```
 
-You'll want to substitute the IP address of your tnc-server.  CNCB0 refers to COM2 in com0com parlance.   For more info on what to put here, check out the [README file for com0com](http://com0com.cvs.sourceforge.net/viewvc/com0com/com0com/ReadMe.txt?revision=RELEASED) and the [README file for com2tcp](http://com0com.cvs.sourceforge.net/*checkout*/com0com/com2tcp/ReadMe.txt?revision=RELEASED).
+You'll want to substitute the IP address of your **tnc-server**.  CNCB0 refers to COM2 in com0com parlance.   For more info on what to put here, check out the [README file for com0com](http://com0com.cvs.sourceforge.net/viewvc/com0com/com0com/ReadMe.txt?revision=RELEASED) and the [README file for com2tcp](http://com0com.cvs.sourceforge.net/*checkout*/com0com/com2tcp/ReadMe.txt?revision=RELEASED).
 
 
 ## Building your own binaries
