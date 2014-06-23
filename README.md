@@ -70,3 +70,13 @@ If you're running aprx on the same machine as tnc-server, using 127.0.0.1 as the
 [Argent Data Tracker2](http://www.argentdata.com/products/tracker2.html)
 
 If you've tested tnc-server with another TNC, let me know and I will add it to this list.
+
+
+## Building your own binaries
+If you want to modify tnc-server and build your own binaries, you'll need a working installation of the [Go Programming Language](http://golang.org).  Once you have that...
+
+```
+% go get github.com/tarm/goserial
+% go get github.com/tv42/topic
+% go build
+```
