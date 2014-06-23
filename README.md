@@ -1,8 +1,8 @@
 # tnc-server
 
-tnc-server is a multiplexing network server for KISS-enabled Amateur Radio packet terminal node controllers (TNCs).   It provides a way to share a TNC amongst multiple read/write, read-only, and write-only clients.   tnc-server attaches to a serial port and sends all received KISS messages to all connected network clients.   The clients talk to tnc-server over TCP and can run locally (on the same machine that's attached to the TNC) or remotely (across the Internet).  
+**tnc-server** is a multiplexing network server for KISS-enabled Amateur Radio packet terminal node controllers (TNCs).   It provides a way to share a TNC amongst multiple read/write, read-only, and write-only clients.   **tnc-server** attaches to a serial port and sends all received KISS messages to all connected network clients.   The clients talk to **tnc-server** over TCP and can run locally (on the same machine that's attached to the TNC) or remotely (across the Internet).  
 
-tnc-server is designed to allow many simultaneous client connections.  An example use case might be an Emergency Operations Center (EOC) that has multiple APRS users but only one TNC and radio transmitter.   In this scenario, they would run tnc-server on a server or workstation attached to the TNC (could be as simple and inexpensive as a [Raspberry Pi](http://raspberrypi.org)) and connect that machine on a LAN with the other workstations.   tnc-server can handle multiple types of workstations simultaneously.   You could connect workstations running APRSISCE/32 running on Windows, Xastir on Linux, and a software digipeater running aprx on a Mac simultaneously.
+**tnc-server** is designed to allow many simultaneous client connections.  An example use case might be an Emergency Operations Center (EOC) that has multiple APRS users but only one TNC and radio transmitter.   In this scenario, they would run **tnc-server** on a server or workstation attached to the TNC (could be as simple and inexpensive as a [Raspberry Pi](http://raspberrypi.org)) and connect that machine on a LAN with the other workstations.   **tnc-server** can handle multiple types of workstations simultaneously.   You could connect workstations running APRSISCE/32 running on Windows, Xastir on Linux, and a software digipeater running aprx on a Mac simultaneously.
 
 tnc-server is written in the [Go Programming Language](http://golang.org/)
 
@@ -11,7 +11,7 @@ tnc-server is written in the [Go Programming Language](http://golang.org/)
 You will need a computer with a serial port that's attached to a TNC that is able to speak the KISS protocol.   tnc-server does not currently support the "TNC2" protocol.  
 
 ### Linux and Mac OS X
-Download the appropriate tnc-server package for your architecture from the one of the links below. 
+Download the appropriate **tnc-server** package for your architecture from the one of the links below. 
 ```
 Usage:
 ./tnc-server [-port=/path/to/serialdevice] [-baud=BAUDRATE] [-listen=IPADDRESS:PORT]
@@ -25,7 +25,7 @@ Usage:
 ```
 
 ### Windows
-Download the appropriate tnc-server package for your architecture from the one of the links below.   See below for virtual COM port emulation, if you plan on running a Windows-based APRS client.
+Download the appropriate **tnc-server** package for your architecture from the one of the links below.   See below for virtual COM port emulation, if you plan on running a Windows-based APRS client.
 ```
 Usage:
 
@@ -56,7 +56,7 @@ Windows 32-bit: http://island.nu/tnc-server/tnc-server-win32.zip
 Windows 64-bit: http://island.nu/tnc-server/tnc-server-win64.zip
 
 ## Using tnc-server with aprx
-tnc-server works very nicely with [aprx](http://wiki.ham.fi/Aprx.en) using aprx's KISS-over-TNC feature.   To use it, simply include a stanza like this in your aprx.conf, substituting your own callsign and optional SSID, and the IP address of your tnc-server:
+**tnc-server** works very nicely with [aprx](http://wiki.ham.fi/Aprx.en) using aprx's KISS-over-TNC feature.   To use it, simply include a stanza like this in your aprx.conf, substituting your own callsign and optional SSID, and the IP address of your tnc-server:
 
 ```
 <interface>
@@ -66,15 +66,15 @@ tnc-server works very nicely with [aprx](http://wiki.ham.fi/Aprx.en) using aprx'
 </interface>
 ```
 
-If you're running aprx on the same machine as tnc-server, using 127.0.0.1 as the IP address.   Otherwise, use your machine's IP address here.
+If you're running aprx on the same machine as **tnc-server**, using 127.0.0.1 as the IP address.   Otherwise, use your machine's IP address here.
 
 ## TNCs known to work with tnc-server
 [Argent Data Tracker2](http://www.argentdata.com/products/tracker2.html)
 
-If you've tested tnc-server with another TNC, let me know and I will add it to this list.
+If you've tested **tnc-server** with another TNC, let me know and I will add it to this list.
 
 ## Windows Virtual COM port
-You don't need to install a virtual COM port to run tnc-server on Windows.   However, if you want to use Windows-based APRS software that expects a COMn port (like COM1, etc), you'll need to use com2tcp from the [com0com project](http://com0com.sourceforge.net/).
+You don't need to install a virtual COM port to run **tnc-server** on Windows.   However, if you want to use Windows-based APRS software that expects a COMn port (like COM1, etc), you'll need to use com2tcp from the [com0com project](http://com0com.sourceforge.net/).
 
 To get this working, download com0com [here](http://sourceforge.net/projects/com0com/files/com0com/3.0.0.0/com0com-3.0.0.0-i386-and-x64-unsigned.zip/download).  Windows 7 users, download the signed version of com0com [here](https://code.google.com/p/powersdr-iq/downloads/detail?name=setup_com0com_W7_x64_signed.exe&can=2&q=).  
 
