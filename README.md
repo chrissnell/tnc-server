@@ -57,6 +57,8 @@ Windows 32-bit: http://island.nu/tnc-server/tnc-server-win32.zip
 
 Windows 64-bit: http://island.nu/tnc-server/tnc-server-win64.zip
 
+If you need binaries for another OS/arch like OpenBSD, FreeBSD, etc., let me know and I can make some for you.
+
 ## Using tnc-server with aprx
 **tnc-server** works very nicely with [aprx](http://wiki.ham.fi/Aprx.en) using aprx's KISS-over-TNC feature.   To use it, simply include a stanza like this in your aprx.conf, substituting your own callsign and optional SSID, and the IP address of your tnc-server:
 
