@@ -72,6 +72,9 @@ If you need binaries for another OS/arch like OpenBSD, FreeBSD, etc., let me kno
 
 If you're running aprx on the same machine as **tnc-server**, using 127.0.0.1 as the IP address.   Otherwise, use your machine's IP address here.
 
+## Using with APRSISCE/32
+**tnc-server** plays nicely with APRSISCE/32.  Start APRSISCE/32, navigate to Configure -> Ports -> New Port... and choose Simply KISS.   Choose TCP/IP as the port type and fill in the IP and port of your **tnc-server** instance.
+
 ## Using with Xastir
 To use **tnc-server** with Xastir, you will need to download and install [remserial](http://lpccomp.bc.ca/remserial/).   You'll run remserial and give it the address of your **tnc-server**, as well as the local pseudo-tty (Linux version of virtual serial ports) that Xastir will attach to.
 
