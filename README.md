@@ -26,7 +26,10 @@ Usage:
 Download the appropriate tnc-server package for your architecture from the one of the links below. 
 ```
 Usage:
-./tnc-server [-port=/path/to/serialdevice] [-baud=BAUDRATE] [-listen=IPADDRESS:PORT]
+
+Open a command-prompt in the directory where you have the tnc-server.exe binary and run it like this:
+
+tnc-server.exe [-port=/path/to/serialdevice] [-baud=BAUDRATE] [-listen=IPADDRESS:PORT]
 
 -port - the serial device where the KISS TNC is attached.  Default: COM1
 
