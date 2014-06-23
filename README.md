@@ -2,7 +2,9 @@
 
 **tnc-server** is a multiplexing network server for KISS-enabled Amateur Radio packet terminal node controllers (TNCs).   It provides a way to share a TNC amongst multiple read/write, read-only, and write-only clients.   **tnc-server** attaches to a serial port and sends all received KISS messages to all connected network clients.   The clients talk to **tnc-server** over TCP and can run locally (on the same machine that's attached to the TNC) or remotely (across the Internet).  
 
-**tnc-server** is designed to allow many simultaneous client connections.  An example use case might be an Emergency Operations Center (EOC) that has multiple APRS users but only one TNC and radio transmitter.   In this scenario, they would run **tnc-server** on a server or workstation attached to the TNC (could be as simple and inexpensive as a [Raspberry Pi](http://raspberrypi.org)) and connect that machine on a LAN with the other workstations.   **tnc-server** can handle multiple types of workstations simultaneously.   You could connect workstations running APRSISCE/32 running on Windows, Xastir on Linux, and a software digipeater running aprx on a Mac *simultaneously*!
+The key difference between **tnc-server** and other remote serial software is that **tnc-server** understands AX.25 and is designed to allow many simultaneous client connections.  Packets sent to **tnc-server** are written to the serial port in a first-in first-out manner and will not clobber each other.
+
+An example use case might be an Emergency Operations Center (EOC) that has multiple APRS users but only one TNC and radio transmitter.   In this scenario, they would run **tnc-server** on a server or workstation attached to the TNC (could be as simple and inexpensive as a [Raspberry Pi](http://raspberrypi.org)) and connect that machine on a LAN with the other workstations.   **tnc-server** can handle multiple types of workstations simultaneously.   You could connect workstations running APRSISCE/32 running on Windows, Xastir on Linux, and a software digipeater running aprx on a Mac *simultaneously*!
 
 tnc-server is written in the [Go Programming Language](http://golang.org/)
 
