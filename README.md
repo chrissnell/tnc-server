@@ -68,10 +68,19 @@ Windows 64-bit: http://island.nu/tnc-server/tnc-server-win64.zip
 
 If you're running aprx on the same machine as **tnc-server**, using 127.0.0.1 as the IP address.   Otherwise, use your machine's IP address here.
 
-## TNCs known to work with tnc-server
-[Argent Data Tracker2](http://www.argentdata.com/products/tracker2.html)
+## Using with Xastir
+To use **tnc-server** with Xastir, you will need to download and install [remserial](http://lpccomp.bc.ca/remserial/).   You'll run remserial and give it the address of your **tnc-server**, as well as the local pseudo-tty (Linux version of virtual serial ports) that Xastir will attach to.
 
-If you've tested **tnc-server** with another TNC, let me know and I will add it to this list.
+Example:
+
+```
+% sudo ./remserial -r 10.50.0.25 -p 6700 -s "4800" -l /dev/remserial1 /dev/ptmx
+% sudo chmod 666 /dev/remserial1
+```
+
+In this example, we're connecting to a TNC server at IP 10.50.0.25 (port 6700) at 4800 baud and mapping that back to /dev/remserial1.   Then we're running chmod to make that virtual serial port read/write accessible to non-root users (you).
+
+Next, fire up Xastir and navigate to the Interface Control menu.  Create a new interface (type: **Serial KISS TNC**) with /dev/remserial1 as the **TNC Port**.  Set your port baud rate to **4800** and choose the iGating options that you want.  Check "Allow Transmitting" if you want Xastir to transmit.  Choose a reasonable APRS digipeater path for your area.   Leave the KISS parameters in their default settings and click **Ok**.   Go back to Interface Control, select your new interface and click the Start button.  It should start hearing stations off the air at this point.
 
 ## Windows Virtual COM port
 You don't need to install a virtual COM port to run **tnc-server** on Windows.   However, if you want to use Windows-based APRS software that expects a COMn port (like COM1, etc), you'll need to use com2tcp from the [com0com project](http://com0com.sourceforge.net/).
@@ -85,6 +94,11 @@ Once you have this package installed, you'll run com2tcp like this:
 ```
 
 You'll want to substitute the IP address of your **tnc-server**.  CNCB0 refers to COM2 in com0com parlance.   For more info on what to put here, check out the [README file for com0com](http://com0com.cvs.sourceforge.net/viewvc/com0com/com0com/ReadMe.txt?revision=RELEASED) and the [README file for com2tcp](http://com0com.cvs.sourceforge.net/*checkout*/com0com/com2tcp/ReadMe.txt?revision=RELEASED).
+
+## TNCs known to work with tnc-server
+[Argent Data Tracker2](http://www.argentdata.com/products/tracker2.html)
+
+If you've tested **tnc-server** with another TNC, let me know and I will add it to this list.
 
 
 ## Building your own binaries
