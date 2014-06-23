@@ -2,7 +2,7 @@
 
 tnc-server is a multiplexing network server for KISS-enabled Amateur Radio packet terminal node controllers (TNCs).   It provides a way to share a TNC amongst multiple read/write, read-only, and write-only clients.   tnc-server attaches to a serial port and sends all received KISS messages to all connected network clients.   The clients talk to tnc-server over TCP and can run locally (on the same machine that's attached to the TNC) or remote (across the Internet).  
 
-tnc-server is written in the (Go Programming Language)[http://golang.org/]
+tnc-server is written in the [Go Programming Language](http://golang.org/)
 
 ## Using tnc-server
 
@@ -54,7 +54,7 @@ Windows 32-bit: http://island.nu/tnc-server/tnc-server-win32.zip
 Windows 64-bit: http://island.nu/tnc-server/tnc-server-win64.zip
 
 ## Using tnc-server with aprx
-tnc-server works very nicely with (aprx)[http://wiki.ham.fi/Aprx.en] using aprx's KISS-over-TNC feature.   To use it, simply include a stanza like this in your aprx.conf, substituting your own callsign and optional SSID, and the IP address of your tnc-server:
+tnc-server works very nicely with [aprx](http://wiki.ham.fi/Aprx.en) using aprx's KISS-over-TNC feature.   To use it, simply include a stanza like this in your aprx.conf, substituting your own callsign and optional SSID, and the IP address of your tnc-server:
 
 ```
 <interface>
@@ -67,6 +67,6 @@ tnc-server works very nicely with (aprx)[http://wiki.ham.fi/Aprx.en] using aprx'
 If you're running aprx on the same machine as tnc-server, using 127.0.0.1 as the IP address.   Otherwise, use your machine's IP address here.
 
 ## TNCs known to work with tnc-server
-(Argent Data Tracker2)[http://www.argentdata.com/products/tracker2.html]
+[Argent Data Tracker2](http://www.argentdata.com/products/tracker2.html)
 
 If you've tested tnc-server with another TNC, let me know and I will add it to this list.
