@@ -8,6 +8,7 @@ package main
 import (
 	"bufio"
 	"flag"
+	"fmt"
 	"github.com/tarm/goserial"
 	"github.com/tv42/topic"
 	"io"
@@ -19,6 +20,7 @@ import (
 
 var (
 	listen *string
+	debug  *bool
 )
 
 // The smallest KISS packet that we can ever expect to see.
@@ -129,25 +131,52 @@ func serialReaderConsumer(consumer chan interface{}, conn net.Conn, top *topic.T
 // for consumption by serialWriter()
 func serialWriterConnection(conn net.Conn, msg chan []byte) {
 	var err error
-	frame := []byte{}
 
-	// Wrap a bufio.Reader around our net.Conn
-	r := bufio.NewReader(conn)
+	for {
 
-	for len(frame) <= reasonableSize {
-		// Read until we see a 0xc0, and store this in the frame (including that 0xc0 byte)
-		frame, err = r.ReadBytes(byte(0xc0))
+		frame := []byte{}
+		var first_byte byte
+
+		// Wrap a bufio.Reader around our net.Conn
+		r := bufio.NewReader(conn)
+
+		// Read our first byte, a 0xc0 and add it to the frame
+		first_byte, err = r.ReadByte()
 		if err != nil {
 			log.Printf("Error reading bytes from %v: %v", conn.RemoteAddr(), err)
 			log.Println("Client hung up.  Closing connection.")
 			conn.Close()
 			return
 		}
-	}
+		frame = append(frame, first_byte)
 
-	// Send the frame we just read off the network to the message buffer for eventual
-	// write to serial
-	msg <- frame
+		for len(frame) <= reasonableSize {
+
+			// Read until we see a 0xc0, and store this in the frame (including that 0xc0 byte)
+			frame, err = r.ReadBytes(byte(0xc0))
+
+			if *debug {
+				fmt.Println("Byte#\tHexVal\tChar\tChar>>1\tBinary")
+				fmt.Println("-----\t------\t----\t-------\t------")
+				for k, v := range frame {
+					rs := v >> 1
+					fmt.Printf("%4d \t%#x \t%v \t%v\t%08b\n", k, v, string(v), string(rs), v)
+				}
+			}
+
+			if err != nil {
+				log.Printf("Error reading bytes from %v: %v", conn.RemoteAddr(), err)
+				log.Println("Client hung up.  Closing connection.")
+				conn.Close()
+				return
+			}
+		}
+
+		// Send the frame we just read off the network to the message buffer for eventual
+		// write to serial
+		msg <- frame
+
+	}
 
 }
 
@@ -174,6 +203,7 @@ func main() {
 	port := flag.String("port", "/dev/ttyUSB0", "Serial port device (default: /dev/ttyUSB0)")
 	baud := flag.Int("baud", 4800, "Baud rate for serial device (default: 4800")
 	listen = flag.String("listen", ":6700", "Address/port to listen on (defaults to 0.0.0.0:6700)")
+	debug = flag.Bool("debug", false, "Enable debugging information (default: false)")
 	flag.Parse()
 
 	// Spin off a goroutine to watch for a SIGINT and die if we get one
