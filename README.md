@@ -47,7 +47,7 @@ Linux AMD/Intel 64-bit:  http://island.nu/tnc-server/tnc-server-linux-amd64.tar.
 
 Linux ARMv7 (BeagleBone/BeagleBoard):  http://island.nu/tnc-server/tnc-server-linux-arm7.tar.gz
 
-Linux ARMv6 (Raspberry Pi, etc.):  http://island.nu/tnc-server/tnc-server-linux-armv6.tar.gz
+Linux ARMv6 (Raspberry Pi, etc.):  http://island.nu/tnc-server/tnc-server-linux-arm6.tar.gz
 
 Mac OS X:  http://island.nu/tnc-server/tnc-server-darwin-amd64.tar.gz
 
