@@ -7,6 +7,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"flag"
 	"fmt"
 	"github.com/tarm/goserial"
@@ -137,6 +138,8 @@ func serialWriterConnection(conn net.Conn, msg chan []byte) {
 		frame := []byte{}
 		var first_byte byte
 
+		var frame_buffer bytes.Buffer
+
 		// Wrap a bufio.Reader around our net.Conn
 		r := bufio.NewReader(conn)
 
@@ -148,7 +151,8 @@ func serialWriterConnection(conn net.Conn, msg chan []byte) {
 			conn.Close()
 			return
 		}
-		frame = append(frame, first_byte)
+
+		frame_buffer.WriteByte(first_byte)
 
 		for len(frame) <= reasonableSize {
 
@@ -172,9 +176,13 @@ func serialWriterConnection(conn net.Conn, msg chan []byte) {
 			}
 		}
 
+		frame_buffer.Write(frame)
+
+		frame_out := frame_buffer.Bytes()
+
 		// Send the frame we just read off the network to the message buffer for eventual
 		// write to serial
-		msg <- frame
+		msg <- frame_out
 
 	}
 
