@@ -87,6 +87,9 @@ In this example, we're connecting to a TNC server at IP 10.50.0.25 (port 6700) a
 
 Next, fire up Xastir and navigate to the Interface Control menu.  Create a new interface (type: **Serial KISS TNC**) with /dev/remserial1 as the **TNC Port**.  Set your port baud rate to **4800** and choose the iGating options that you want.  Check "Allow Transmitting" if you want Xastir to transmit.  Choose a reasonable APRS digipeater path for your area.   Leave the KISS parameters in their default settings and click **Ok**.   Go back to Interface Control, select your new interface and click the Start button.  It should start hearing stations off the air at this point.
 
+## Using tnc-server to debug/develop APRS clients
+It is possible to use **tnc-server** and the **socat** utility to create a virtual null-modem connection that allows you to debug or develop an APRS/AX.25 client without the need for multiple physical RS-232 ports and without a null-modem cable.  For more details, see [this blog post](http://output.chrissnell.com/post/94364500380/debugging-aprs-clients-with-a-virtual-null-modem-cable).
+
 ## Windows Virtual COM port
 You don't need to install a virtual COM port to run **tnc-server** on Windows.   However, if you want to use Windows-based APRS software that expects a COMn port (like COM1, etc), you'll need to use com2tcp from the [com0com project](http://com0com.sourceforge.net/).
 
