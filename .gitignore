@@ -12,19 +12,3 @@ tnc-server-linux-armv6.tar.gz
 tnc-server-win32.exe
 
 tnc-server-win64.exe
-
-dist/tnc-server-linux-amd64.tar.gz
-
-dist/make_distro.sh
-
-dist/tnc-server-darwin-amd64.tar.gz
-
-dist/tnc-server-linux-arm6.tar.gz
-
-dist/tnc-server-linux-arm7.tar.gz
-
-dist/tnc-server-win32.zip
-
-dist/tnc-server-win64.zip
-
-tnc-server-linux-amd64.tar.gz
