@@ -28,3 +28,5 @@ dist/tnc-server-win32.zip
 dist/tnc-server-win64.zip
 
 tnc-server-linux-amd64.tar.gz
+
+*.gz

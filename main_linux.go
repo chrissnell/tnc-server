@@ -17,6 +17,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"time"
 )
 
 func main() {
@@ -46,10 +47,18 @@ func main() {
 		}
 
 	} else if *i2caddr != 0 {
-		s, err = i2c.New(uint8(*i2caddr), *i2cbus)
+		i, err := i2c.New(uint8(*i2caddr), *i2cbus)
 		if err != nil {
 			log.Fatalf("Error opening I2C address %v on bus %v: %v\n", *i2caddr, *i2cbus, err)
 		}
+		log.Println("Resetting I2C TNC...")
+		i.SMBusWriteByte(0xC0)
+		i.SMBusWriteByte(15)
+		i.SMBusWriteByte(2)
+		time.Sleep(2 * time.Second)
+		log.Println("Reset complete")
+
+		s = io.ReadWriteCloser(i)
 	} else {
 		log.Fatalln("Must pass -port argument (for serial) or -i2cbus and -i2caddr arguments (for I2C).   Use -h flag for help.")
 	}

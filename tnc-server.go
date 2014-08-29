@@ -75,7 +75,6 @@ func newSerialListener(serialport io.ReadWriteCloser) {
 
 // This function reads off the serial port and sends what it gets to Topic
 func serialReaderBroadcaster(top *topic.Topic, serialport io.ReadWriteCloser) {
-	var err error
 
 	// Wrap the goserial's ReadWriteCloser with a bufio.Reader so we can do fancy stuffs.
 	sr := bufio.NewReader(serialport)
@@ -84,11 +83,89 @@ func serialReaderBroadcaster(top *topic.Topic, serialport io.ReadWriteCloser) {
 
 		frame := []byte{}
 
-		for len(frame) <= reasonableSize {
-			// Read forward until we encounter 0xc0 and return this data including the 0xc0.
-			frame, err = sr.ReadBytes(byte(0xc0))
+		framestarted := false
+
+		bcount := 0
+
+		//for len(frame) <= reasonableSize {
+		for bcount <= 400 {
+
+			c, err := sr.ReadByte()
 			if err != nil {
 				log.Printf("Error reading bytes from serial: %v\n", err)
+			}
+
+		readloop:
+			switch c {
+			case 0xE:
+				// The first character read from an I2C TNC will be a 0xE.
+				// It should be discarded, as it is not part of a frame.
+			case 0x2C:
+				// I2C Readers are handled a little differently than standard serial port Readers.
+				// When reading an I2C filehandle, it will return a steady stream of 0x2C bytes until
+				// some actual data is sent across.  For this reason, we test to see the AX.25 frame
+				// has begun (i.e. we've received a 0xC0 FEND) and we only append the 0xE if it's part
+				// of an actual frame
+				if framestarted {
+					// We've received a 0xE and a frame has already begun so it will be added
+					// to our frame
+					frame = append(frame, c)
+					bcount++
+					rs := c >> 1
+					log.Printf("%4d \t%#x \t%v \t%v\t%08b\n", bcount, c, string(c), string(rs), c)
+				}
+			case 0xC0:
+
+				log.Printf("FEND received.  Size of frame so far: %v", len(frame))
+
+				if framestarted {
+
+					log.Println("End FEND received")
+
+					// If we receive a 0xC0 (FEND) and the frame has already started, this is probably
+					// the end of our frame.  The outer loop will continue to run if our frame has not
+					// reached reasonableSize.
+					frame = append(frame, c)
+					bcount++
+					rs := c >> 1
+					log.Printf("%4d \t%#x \t%v \t%v\t%08b\n", bcount, c, string(c), string(rs), c)
+					break readloop
+				} else {
+
+					log.Println("Beginning FEND received")
+
+					// We've received a 0xC0 (FEND) and the frame has not yet started so we know that
+					// this marks the beginning of a new frame.  Append the byte to frame and set
+					// framestarted to true.
+					frame = append(frame, c)
+					bcount++
+					framestarted = true
+					rs := c >> 1
+					log.Printf("%4d \t%#x \t%v \t%v\t%08b\n", bcount, c, string(c), string(rs), c)
+				}
+			default:
+				frame = append(frame, c)
+				bcount++
+				rs := c >> 1
+				log.Printf("%4d \t%#x \t%v \t%v\t%08b\n", bcount, c, string(c), string(rs), c)
+			}
+
+		}
+
+		// We've received a frame that's too long or too short.  Probably junk.  Discared and continue
+		if bcount >= 400 || bcount < 15 {
+			log.Printf("Breaking.  bcount: %v\n", bcount)
+			continue
+		}
+
+		log.Println("Sending frame")
+
+		if *debug {
+			fmt.Println("Byte#\tHexVal\tChar\tChar>>1\tBinary")
+			fmt.Println("-----\t------\t----\t-------\t------")
+			for k, v := range frame {
+				rs := v >> 1
+				fmt.Printf("%4d \t%#x \t%v \t%v\t%08b\n", k, v, string(v), string(rs), v)
 			}
 		}
 
