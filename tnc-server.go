@@ -8,11 +8,15 @@ package main
 import (
 	"bufio"
 	"bytes"
+	"flag"
 	"fmt"
+	"github.com/tarm/goserial"
 	"github.com/tv42/topic"
 	"io"
 	"log"
 	"net"
+	"os"
+	"os/signal"
 )
 
 var (
@@ -200,4 +204,31 @@ func serialWriter(s io.ReadWriteCloser, msg chan []byte) {
 			}
 		}
 	}
+}
+
+func main() {
+
+	port := flag.String("port", "/dev/ttyUSB0", "Serial port device (default: /dev/ttyUSB0)")
+	baud := flag.Int("baud", 4800, "Baud rate for serial device (default: 4800")
+	listen = flag.String("listen", ":6700", "Address/port to listen on (defaults to 0.0.0.0:6700)")
+	debug = flag.Bool("debug", false, "Enable debugging information (default: false)")
+	flag.Parse()
+
+	// Spin off a goroutine to watch for a SIGINT and die if we get one
+	sig := make(chan os.Signal, 1)
+	signal.Notify(sig, os.Interrupt)
+
+	sc := &serial.Config{Name: *port, Baud: *baud}
+
+	s, err := serial.OpenPort(sc)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer s.Close()
+
+	go newSerialListener(s)
+
+	<-sig
+	log.Println("SIGINT received.  Shutting down...")
+	os.Exit(1)
 }
