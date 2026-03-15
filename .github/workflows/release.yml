@@ -30,3 +30,49 @@ jobs:
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  windows-installer:
+    name: Build Windows Installer
+    needs: goreleaser
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Windows binaries from release
+        uses: robinraju/release-downloader@v1.11
+        with:
+          repository: "${{ github.repository }}"
+          tag: "${{ github.ref_name }}"
+          fileName: "tnc-server_*_windows_*.zip"
+          out-file-path: "dist"
+          extract: true
+
+      - name: Install NSIS
+        run: |
+          choco install nsis -y
+          echo "C:\Program Files (x86)\NSIS" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Prepare installer files
+        run: |
+          $exePath = Get-ChildItem -Path dist -Recurse | Where-Object { $_.Name -eq "tnc-server.exe" } | Select-Object -First 1
+          if ($exePath) {
+            New-Item -ItemType Directory -Force -Path packaging\windows | Out-Null
+            Copy-Item $exePath.FullName -Destination packaging\windows\tnc-server.exe
+            Write-Host "Copied $($exePath.FullName) to packaging\windows\tnc-server.exe"
+          } else {
+            Write-Error "Could not find tnc-server.exe in extracted files"
+            exit 1
+          }
+
+      - name: Build NSIS installer
+        run: |
+          cd packaging\windows
+          makensis tnc-server.nsi
+
+      - name: Upload installer to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: packaging/windows/tnc-server-installer.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
