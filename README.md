@@ -28,6 +28,60 @@ Usage:
 -debug - enable debug output with hex dumps of received frames
 ```
 
+On Linux you can have `systemd` automatically start `tnc-server` when the machines boots. Put this
+in `/etc/systemd/system/tnc-server.service`:
+```
+# /etc/systemd/system/tnc-server.service
+[Unit]
+Description=TNC Server - Multiplexing network server for KISS TNCs
+Documentation=https://github.com/chrissnell/tnc-server
+After=network.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/default/tnc-server
+ExecStart=/usr/local/bin/tnc-server -port=${TNC_DEVICE} -baud=${TNC_BAUD} -listen=${TNC_LISTEN}
+Restart=on-failure
+RestartSec=5
+
+# Hardening
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+# Allow access to serial devices
+SupplementaryGroups=dialout
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Then put this configuration file in `/etc/default/tnc-server`:
+```
+# /etc/default/tnc-server
+# Configuration for the tnc-server systemd service
+
+# Serial device path, or tcp:host:port for network KISS (e.g. Direwolf)
+# Examples:
+#   /dev/ttyACM0              (serial)
+#   tcp:192.168.1.100:8001    (TCP KISS, e.g. Direwolf)
+TNC_DEVICE=/dev/ttyACM0
+
+# Baud rate for serial device (ignored for TCP connections)
+TNC_BAUD=1200
+
+# IP address and port to listen for incoming client connections
+TNC_LISTEN=0.0.0.0:6700
+```
+
+Adjust the settings in the config file as necessary. Then:
+```
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable --now tnc-server
+```
+
 ### Windows
 Download the appropriate **tnc-server** package for your architecture from the [releases page](https://github.com/chrissnell/tnc-server/releases).   See below for virtual COM port emulation, if you plan on running a Windows-based APRS client.
 ```
@@ -104,7 +158,8 @@ Once you have this package installed, you'll run com2tcp like this:
 You'll want to substitute the IP address of your **tnc-server**.  CNCB0 refers to COM2 in com0com parlance.   For more info on what to put here, check out the [README file for com0com](http://com0com.cvs.sourceforge.net/viewvc/com0com/com0com/ReadMe.txt?revision=RELEASED) and the [README file for com2tcp](http://com0com.cvs.sourceforge.net/*checkout*/com0com/com2tcp/ReadMe.txt?revision=RELEASED).
 
 ## TNCs known to work with tnc-server
-[Argent Data Tracker2](http://www.argentdata.com/products/tracker2.html)
+- [Argent Data Tracker2](http://www.argentdata.com/products/tracker2.html)
+- Kenwood TH-D75 handheld radio
 
 If you've tested **tnc-server** with another TNC, let me know and I will add it to this list.
 
